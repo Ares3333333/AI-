@@ -21,5 +21,6 @@ def test_home_has_non_fake_domain_interaction():
 
 
 def test_reduced_motion_is_respected():
-    css = read('static/site.css')
-    assert '@media (prefers-reduced-motion: reduce)' in css
+    css = read('static/site.css') + read('static/polish.css')
+    assert 'prefers-reduced-motion' in css
+    assert 'transition:none!important' in css
