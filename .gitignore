@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+*.db
+*.db-*
+*.sqlite*
+.env
+.venv/
+instance/
+private/
+node_modules/
+.remote-read/
+*.log
