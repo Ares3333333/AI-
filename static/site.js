@@ -23,6 +23,27 @@ function brief(form){
  const link=output.querySelector('a');link.href=briefUrl;link.download='business-brief.txt';link.click();
  message('#brief-message','Бриф сформирован. Браузеру предложено скачать файл; текст также доступен ниже. Ничего не отправлялось, встреча не назначена.');
 }
+function cleanDomain(value){
+ const raw=(value||'').trim().replace(/^https?:\/\//i,'').replace(/^www\./i,'').split(/[\/?#]/)[0];
+ return raw.replace(/[^a-z0-9а-яё.-]/gi,'').slice(0,46);
+}
+function initializeDomainPreview(){
+ const input=document.querySelector('[data-domain-input]');
+ const preview=document.querySelector('[data-domain-preview]');
+ const value=document.querySelector('[data-domain-value]');
+ const state=document.querySelector('[data-domain-state]');
+ if(!input||!preview||!value||!state)return;
+ const update=()=>{
+  const domain=cleanDomain(input.value);
+  preview.classList.toggle('domain-preview-active',Boolean(domain));
+  value.textContent=domain||'Ваш сайт.';
+  state.textContent=domain?'Готов к ограниченной проверке':'Введите домен слева';
+ };
+ input.addEventListener('input',update,{passive:true});
+ input.addEventListener('focus',()=>preview.classList.add('domain-preview-focus'));
+ input.addEventListener('blur',()=>preview.classList.remove('domain-preview-focus'));
+ update();
+}
 document.addEventListener('submit',async e=>{
  const form=e.target;if(!(form instanceof HTMLFormElement))return;
  if(form.id==='brief-form'){e.preventDefault();brief(form);return;}
@@ -49,6 +70,7 @@ document.addEventListener('click',async e=>{
 });
 function initialize(){
  if(pollTimer)clearTimeout(pollTimer);
+ initializeDomainPreview();
  if(location.hash.startsWith('#token=')){accessToken=new URLSearchParams(location.hash.slice(1)).get('token')||'';history.replaceState(null,'',location.pathname);message('#access-message','Ссылка получена. Нажмите кнопку для подтверждения входа.');}
  const progress=$('#report-progress');
  if(progress&&['queued','running'].includes(progress.dataset.status)&&!staticMode()){
