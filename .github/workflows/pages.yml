@@ -40,8 +40,10 @@ jobs:
           python scripts/export_preview.py _site/index.html
           cp _site/index.html _site/404.html
           touch _site/.nojekyll
-      - name: Configure GitHub Pages
+      - name: Configure and enable GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
