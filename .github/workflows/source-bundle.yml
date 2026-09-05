@@ -1,0 +1,38 @@
+name: Source bundle
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: source-bundle
+  cancel-in-progress: true
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package source without runtime data
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import zipfile
+          root = Path('.')
+          excluded = {'.git', 'instance', 'private', '__pycache__', '.pytest_cache', '.venv', 'node_modules'}
+          with zipfile.ZipFile('/tmp/ai-business-source.zip', 'w', zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(root.rglob('*')):
+                  if not p.is_file() or p.is_symlink() or excluded.intersection(p.parts):
+                      continue
+                  if p.name == '.env' or p.suffix in {'.db', '.sqlite3', '.log', '.pyc'}:
+                      continue
+                  z.write(p, Path('ai-business-site') / p)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-business-source
+          path: /tmp/ai-business-source.zip
+          retention-days: 1
+          if-no-files-found: error
