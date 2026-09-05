@@ -1,0 +1,16 @@
+/* Final visual refinement layer. Kept separate from the base stylesheet so changes stay reviewable. */
+:root{--display:"Segoe UI Variable Display","Inter","Helvetica Neue",Arial,sans-serif;--text:"Segoe UI Variable Text","Inter",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{font-family:var(--text);font-kerning:normal;text-rendering:optimizeLegibility}
+h1,h2,h3,.brand{font-family:var(--display);font-synthesis:none}
+h1,h2{letter-spacing:-.055em}.hero h1{letter-spacing:-.065em}.hero-description,.lede,.page-intro{letter-spacing:-.012em}
+.hero-description{max-width:650px;font-size:19px;line-height:1.58;color:#d4dccd}.lede{line-height:1.6}
+.eyebrow{letter-spacing:.115em}.small{letter-spacing:.002em}
+.service-row{transition:background-color .18s ease,padding-left .18s ease,padding-right .18s ease}.service-row:hover{padding-left:14px;padding-right:14px}
+.article-card{transition:transform .2s ease,border-color .2s ease}.article-card:hover{transform:translateY(-4px);border-color:#718457}
+.hero-visual{transition:border-color .22s ease,transform .22s ease,box-shadow .22s ease}.hero-visual.domain-preview-focus{border-color:#91a965;box-shadow:0 0 0 1px #91a96533}.hero-visual.domain-preview-active{transform:translateY(-3px)}
+.source-node{transition:transform .22s ease,box-shadow .22s ease}.domain-preview-active .source-node{transform:scale(1.025);box-shadow:0 14px 35px #0003}.source-node small{display:block;margin-top:8px;font-size:10px;line-height:1.35;letter-spacing:.02em;opacity:.7;overflow-wrap:anywhere}.source-node strong{overflow-wrap:anywhere}
+.domain-form:focus-within{box-shadow:0 0 0 2px #d3ff5a55}.domain-form input::placeholder{color:#6f776a}
+.price-card{transition:transform .18s ease,border-color .18s ease}.price-card:hover{transform:translateY(-3px);border-color:#9eaa8e}.price-card.dark:hover{border-color:#536146}
+.text-link{transition:color .16s ease,border-color .16s ease}.final-cta .button{transition:transform .16s ease,background-color .16s ease}
+@media (max-width:580px){.hero-description{font-size:17px;line-height:1.58}.service-row:hover{padding-left:0;padding-right:0}.article-card:hover,.price-card:hover,.hero-visual.domain-preview-active{transform:none}}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}.service-row,.article-card,.hero-visual,.source-node,.price-card,.button,.text-link{transition:none!important}.service-row:hover{padding-left:0;padding-right:0}.article-card:hover,.price-card:hover,.hero-visual.domain-preview-active,.domain-preview-active .source-node{transform:none!important}}
