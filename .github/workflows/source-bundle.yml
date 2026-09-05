@@ -1,38 +1,68 @@
-name: Source bundle
+name: Verify and preserve website
 on:
   push:
     branches: [main]
+    paths: [BUILD_TRIGGER, .github/workflows/source-bundle.yml]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
 concurrency:
   group: source-bundle
   cancel-in-progress: true
 jobs:
-  bundle:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned test requirements
+        run: python -m pip install -r requirements-dev.txt
+      - name: Verify code and render all preview routes
+        run: |
+          mkdir -p docs/verification
+          python -m compileall -q siteapp scripts
+          python -m pytest -q --junitxml=docs/verification/unit-tests.xml
+          python scripts/export_preview.py preview/index.html > docs/verification/export.json
+          git rev-parse HEAD > docs/verification/built-from.txt
+      - name: Preserve the final review bundle in this repository
+        if: success() && hashFiles('BUILD_TRIGGER') != ''
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add preview/index.html docs/verification/unit-tests.xml docs/verification/export.json docs/verification/built-from.txt
+          if ! git diff --cached --quiet; then
+            git commit -m 'build: preserve verified review bundle [skip ci]'
+            git push
+          fi
       - name: Package source without runtime data
+        if: always()
         shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
           import zipfile
-          root = Path('.')
-          excluded = {'.git', 'instance', 'private', '__pycache__', '.pytest_cache', '.venv', 'node_modules'}
-          with zipfile.ZipFile('/tmp/ai-business-source.zip', 'w', zipfile.ZIP_DEFLATED) as z:
-              for p in sorted(root.rglob('*')):
-                  if not p.is_file() or p.is_symlink() or excluded.intersection(p.parts):
-                      continue
-                  if p.name == '.env' or p.suffix in {'.db', '.sqlite3', '.log', '.pyc'}:
-                      continue
-                  z.write(p, Path('ai-business-site') / p)
+          excluded={'.git','instance','private','__pycache__','.pytest_cache','.venv','node_modules'}
+          with zipfile.ZipFile('/tmp/ai-business-source.zip','w',zipfile.ZIP_DEFLATED) as z:
+              for p in sorted(Path('.').rglob('*')):
+                  if not p.is_file() or p.is_symlink() or excluded.intersection(p.parts): continue
+                  if p.name.startswith('.env') and p.name!='.env.example': continue
+                  if p.suffix in {'.db','.sqlite','.sqlite3','.log','.pyc'} or '-wal' in p.name or '-shm' in p.name: continue
+                  z.write(p,Path('ai-business-site')/p)
           PY
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: ai-business-source
           path: /tmp/ai-business-source.zip
+          retention-days: 1
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: ai-business-preview
+          path: preview/index.html
           retention-days: 1
           if-no-files-found: error
