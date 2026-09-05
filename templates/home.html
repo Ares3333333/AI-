@@ -1,13 +1,71 @@
 {% extends 'base.html' %}{% block content %}
-<section class="hero dark"><div class="hero-copy"><p class="eyebrow"><span class="dot"></span> ИИ-СИСТЕМЫ ДЛЯ БИЗНЕСА</p><h1>Бизнесу нужен<br>не ИИ. Бизнесу<br>нужен <em>результат.</em></h1><p class="hero-description">Помогаем компании стать понятнее для поиска и ИИ. Находим процессы, где автоматизация оправдана, и внедряем решения с проверяемым результатом.</p><form action="/scan/" method="get" class="domain-form"><label class="visually-hidden" for="hero-domain">Домен сайта</label><input id="hero-domain" name="domain" placeholder="Домен вашего сайта" autocomplete="url" maxlength="253" required><button class="button lime" type="submit">Проверить сайт <span>↗</span></button></form><p class="small muted">Публичные данные. Без доступов к вашим системам.<br>Сначала результат, потом контакт.</p><a class="text-link" href="/contact/">Есть конкретная задача? ↗</a></div>
-<div class="hero-visual" aria-label="Схема метода, не результат сканирования"><div class="diagram-top"><span>СХЕМА / 01</span><span>НЕ РЕЗУЛЬТАТ СКАНА</span></div><div class="diagram-grid"><div class="node source-node"><span>01 / ИСХОДНЫЕ ДАННЫЕ</span><strong>Ваш сайт.<br>Без догадок.</strong><i>↙ &nbsp; ↘</i></div><div class="split-line" aria-hidden="true"></div><div class="diagram-bottom"><div class="node"><span>02 / НАБЛЮДЕНИЯ</span><strong>Что можно<br>проверить</strong></div><div class="node"><span>03 / РЕШЕНИЕ</span><strong>Что имеет<br>смысл менять</strong></div></div></div><div class="diagram-foot"><span class="dot"></span> Доказательство важнее обещания <span>↗</span></div></div>
-<div class="hero-bottom"><span><b>01</b> Поиск и понятное предложение</span><span><b>02</b> Автоматизация одного процесса</span><span><b>03</b> Передача кода и контроля</span></div></section>
-<section class="section"><div class="section-heading"><p class="eyebrow">СНАЧАЛА — ЗАДАЧА</p><div><h2>Технология не исправит<br>непонятное предложение.</h2><p class="lede">Начинаем не с выбора модели. Находим место, где теряются ясность, время или управляемость, и проверяем, что действительно можно изменить.</p></div></div><div class="problem-grid"><article><span class="small muted">/ 01</span><h3>Вас не находят.<br>Или понимают неверно.</h3><p>На сайте есть услуги, но покупателю сложно понять состав, цену и отличие. ИИ-системам тоже нужны доступные, согласованные сведения.</p><a class="text-link" href="/services/seo-geo/">SEO и GEO ↗</a></article><article><span class="small muted">/ 02</span><h3>Рутина съедает время.<br>Что автоматизировать?</h3><p>Выбираем один повторяющийся процесс. Сравниваем решение с обычным кодом и готовым сервисом. ИИ не обязан выиграть это сравнение.</p><a class="text-link" href="/services/ai-systems/">ИИ-системы ↗</a></article><article><span class="small muted">/ 03</span><h3>Демо впечатляет.<br>Результат под вопросом.</h3><p>До разработки фиксируем входные данные, стоимость ошибки и тесты приёмки. Красивый ответ модели не заменяет работающий процесс.</p><a class="text-link" href="/services/ai-audit/">Аудит и стратегия ↗</a></article></div></section>
-<section class="section compact-top"><div class="section-heading"><p class="eyebrow">ПЯТЬ НАПРАВЛЕНИЙ</p><h2>Ровно столько системы,<br>сколько нужно бизнесу.</h2></div><div class="service-list">{% for s in services %}<a class="service-row" href="/services/{{ s.slug }}/"><span class="small muted">{{ s.number }}</span><h3>{{ s.title }}</h3><span class="service-short">{{ s.short }}</span><span class="price-label">{{ s.price }}</span><span>↗</span></a>{% endfor %}</div><p class="small muted">Отдельная задача, понятный объём и проверяемая приёмка. Не универсальная платформа для всего.</p></section>
-<section class="section compact-top"><div class="case-feature"><div><p class="eyebrow">ВНУТРЕННИЙ ПРОЕКТ · НЕ ОТЗЫВ КЛИЕНТА</p><h2>SHAR<br>Production</h2><p>Собственный публичный проект команды. Разделяем технические наблюдения и бизнес-результаты, для которых нужны исходные измерения.</p><a class="text-link" href="/cases/shar/">Карта доказательств ↗</a></div><div class="proof-table"><h3>Что можно утверждать сейчас</h3><div><span>Связь с командой</span><b>Внутренний проект</b></div><div><span>Рост позиций и заявок</span><b>Не подтверждён в этой сборке</b></div><div><span>Работоспособность MCP</span><b>Нужна протокольная проверка</b></div><div><span>Чужие логотипы и отзывы</span><b>Не используются</b></div><p class="small">Никаких «×10» без периода, базы сравнения и источника.</p></div></div></section>
-<section class="section ruled"><div class="section-heading"><p class="eyebrow">МЕТОД РАБОТЫ</p><h2>Сначала доказательство.<br>Потом решение.</h2></div><div class="step-grid"><article><span class="small muted">01 /</span><h3>Уточнить задачу</h3><p>Что должно измениться, какие данные доступны и где проходит граница.</p></article><article><span class="small muted">02 /</span><h3>Проверить</h3><p>Наблюдения с источниками. Неизвестное не превращается в плохой балл.</p></article><article><span class="small muted">03 /</span><h3>Сделать нужное</h3><p>Ограниченный объём, критерии приёмки и прозрачная эксплуатация.</p></article><article><span class="small muted">04 /</span><h3>Передать и поддерживать</h3><p>Документация, согласованные исходники и возможность сменить исполнителя.</p></article></div><a class="text-link" href="/method/">Разобрать методику ↗</a></section>
-<section class="section tinted"><div class="section-heading"><p class="eyebrow">ПОНЯТНЫЙ ВХОД</p><h2>Разный объём.<br>Разная глубина работы.</h2></div><div class="price-grid"><article class="price-card"><p class="eyebrow">АВТОМАТИЧЕСКИ</p><h3>Бесплатно</h3><p>До 8 HTML-страниц своего сайта. Структурные наблюдения и ограниченная сводка. Не полный аудит бизнеса.</p><a class="button ghost" href="/scan/">Что проверяется <span>↗</span></a></article><article class="price-card dark"><p class="eyebrow">ЭКСПЕРТНЫЙ АУДИТ</p><h3>от 250 000 ₽</h3><p>Конкретная задача, ограничения, варианты решения и план пилота. Без бесплатного ручного исследования в пресейле.</p><a class="button lime" href="/contact/">Обсудить состав <span>↗</span></a></article><article class="price-card"><p class="eyebrow">ВНЕДРЕНИЕ</p><h3>от 500 000 ₽</h3><p>Разработка ограниченного сценария, тесты и передача результата. Понятную задачу можно внедрять без отдельного аудита.</p><a class="button ghost" href="/contact/">Обсудить внедрение <span>↗</span></a></article></div><p class="small muted">Расширенный автоматический отчёт: рабочая цена 25 000 ₽. Продажа не включена. <a href="/prices/">Состав и ограничения ↗</a></p></section>
-<section class="section fit-section"><div><p class="eyebrow">МЫ ПОДХОДИМ НЕ ВСЕМ</p><h2>Иногда лучший<br>ИИ-проект —<br>тот, который<br>не начали.</h2></div><div class="fit-list"><p>Нужны гарантии первого места или рекомендации ChatGPT.</p><p>Ожидается бесплатное ручное исследование всей компании.</p><p>Цель — массовые рассылки, спам или фиктивные упоминания.</p><p>Нет владельца процесса, данных или критерия результата.</p><a class="text-link" href="/solutions/">Когда решение действительно уместно ↗</a></div></section>
-<section class="section compact-top"><div class="section-heading"><div><p class="eyebrow">ЖУРНАЛ РЕШЕНИЙ</p><a class="text-link" href="/journal/">Открыть журнал ↗</a></div><div><h2>Разобраться до того,<br>как платить.</h2><p class="lede">Практические разборы стоимости, проверки и выбора решения. Без обещаний управлять чужим поиском.</p></div></div><div class="journal-grid">{% for a in articles[:3] %}{% include 'article_card.html' %}{% endfor %}</div></section>
-<section class="final-cta"><h2>Меньше разговоров об ИИ.<br>Больше ясности в задаче.</h2><div><p>Начните с ограниченной проверки сайта или подготовьте бриф по конкретному процессу.</p><a class="button dark" href="/scan/">Проверить сайт <span>↗</span></a></div></section>
+<section class="hero dark">
+  <div class="hero-copy">
+    <p class="eyebrow"><span class="dot"></span> ИИ-СИСТЕМЫ ДЛЯ БИЗНЕСА</p>
+    <h1>Бизнесу нужен<br>не ИИ. Бизнесу<br>нужен <em>результат.</em></h1>
+    <p class="hero-description">Покажем, что на сайте мешает поиску и ИИ понять ваш бизнес. Если проблема глубже — найдём один процесс, где автоматизация действительно окупается. Если ИИ не нужен — так и скажем.</p>
+    <form action="/scan/" method="get" class="domain-form">
+      <label class="visually-hidden" for="hero-domain">Домен сайта</label>
+      <input id="hero-domain" data-domain-input name="domain" placeholder="example.com" autocomplete="url" maxlength="253" required>
+      <button class="button lime" type="submit">Начать с сайта <span>↗</span></button>
+    </form>
+    <p class="small muted">Только публичные страницы. Без CRM, кабинетов и доступа к внутренним данным.</p>
+    <a class="text-link" href="/contact/">Есть конкретная задача? Обсудить ↗</a>
+  </div>
+
+  <div class="hero-visual" data-domain-preview aria-label="Схема проверки, не результат сканирования">
+    <div class="diagram-top"><span>ПРОВЕРКА / 01</span><span>СХЕМА · НЕ РЕЗУЛЬТАТ</span></div>
+    <div class="diagram-grid">
+      <div class="node source-node"><span>01 / ИСТОЧНИК</span><strong data-domain-value>Ваш сайт.</strong><small data-domain-state>Введите домен слева</small><i>↙ &nbsp; ↘</i></div>
+      <div class="split-line" aria-hidden="true"></div>
+      <div class="diagram-bottom">
+        <div class="node"><span>02 / ФАКТЫ</span><strong>Что видно<br>на страницах</strong></div>
+        <div class="node"><span>03 / ДЕЙСТВИЕ</span><strong>Что менять<br>в первую очередь</strong></div>
+      </div>
+    </div>
+    <div class="diagram-foot"><span class="dot"></span> Никаких выдуманных процентов <span>↗</span></div>
+  </div>
+
+  <div class="hero-bottom"><span><b>01</b> Видимость и предложение</span><span><b>02</b> Один процесс для автоматизации</span><span><b>03</b> Код, данные и контроль у заказчика</span></div>
+</section>
+
+<section class="section">
+  <div class="section-heading"><p class="eyebrow">ГДЕ ТЕРЯЮТСЯ ДЕНЬГИ</p><div><h2>Сначала разбираемся<br>с причиной.</h2><p class="lede">Не продаём модель ради модели. Проверяем, где именно бизнес теряет спрос, время или контроль, и только потом выбираем инструмент.</p></div></div>
+  <div class="problem-grid">
+    <article><span class="small muted">/ 01</span><h3>Клиент не понимает,<br>что вы продаёте.</h3><p>Услуги есть, но непонятны состав, цена, ограничения или отличие от конкурентов. Исправляем представление бизнеса для людей, поиска и ИИ.</p><a class="text-link" href="/services/seo-geo/">SEO и GEO ↗</a></article>
+    <article><span class="small muted">/ 02</span><h3>Рутина повторяется<br>каждый день.</h3><p>Берём один процесс и сравниваем ИИ с обычной автоматизацией и готовым сервисом. Побеждает решение, а не модное слово.</p><a class="text-link" href="/services/ai-systems/">Автоматизация ↗</a></article>
+    <article><span class="small muted">/ 03</span><h3>Демо красиво.<br>Приёмка размыта.</h3><p>До разработки фиксируем входные данные, ошибки, ограничения и тесты. Результат должен выдержать проверку, а не презентацию.</p><a class="text-link" href="/services/ai-audit/">Аудит ↗</a></article>
+  </div>
+</section>
+
+<section class="section compact-top">
+  <div class="section-heading"><p class="eyebrow">ЧТО МОЖНО КУПИТЬ</p><h2>Пять направлений.<br>Без «цифровой трансформации».</h2></div>
+  <div class="service-list">{% for s in services %}<a class="service-row" href="/services/{{ s.slug }}/"><span class="small muted">{{ s.number }}</span><h3>{{ s.title }}</h3><span class="service-short">{{ s.short }}</span><span class="price-label">{{ s.price }}</span><span>↗</span></a>{% endfor %}</div>
+  <p class="small muted">Понятная задача идёт сразу во внедрение. Неясная — через аудит. Малый бюджет не занимает ручное время команды.</p>
+</section>
+
+<section class="section compact-top">
+  <div class="case-feature">
+    <div><p class="eyebrow">ВНУТРЕННИЙ КЕЙС · SHAR PRODUCTION</p><h2>Показываем<br>только то,<br>что можем доказать.</h2><p>SHAR — собственный проект команды. Поэтому технические наблюдения публикуем отдельно от бизнес-эффекта. Никаких нарисованных «×10» и чужих отзывов.</p><a class="text-link" href="/cases/shar/">Открыть карту доказательств ↗</a></div>
+    <div class="proof-table"><h3>Статус утверждений</h3><div><span>Связь с командой</span><b>Подтверждено: внутренний проект</b></div><div><span>Рост позиций и заявок</span><b>Нужны исходные измерения</b></div><div><span>MCP / agent readiness</span><b>Нужна протокольная проверка</b></div><div><span>Чужие логотипы и отзывы</span><b>Не используются</b></div><p class="small">Уверенность здесь строится на границах доказательства, а не на громкости формулировки.</p></div>
+  </div>
+</section>
+
+<section class="section ruled">
+  <div class="section-heading"><p class="eyebrow">КАК РАБОТАЕМ</p><h2>Четыре шага.<br>Без ритуалов вокруг ИИ.</h2></div>
+  <div class="step-grid"><article><span class="small muted">01 /</span><h3>Фиксируем результат</h3><p>Что должно измениться и как это принять.</p></article><article><span class="small muted">02 /</span><h3>Проверяем факты</h3><p>Источники, ограничения и неизвестные данные.</p></article><article><span class="small muted">03 /</span><h3>Собираем решение</h3><p>Минимальный объём, который решает задачу.</p></article><article><span class="small muted">04 /</span><h3>Передаём контроль</h3><p>Исходники, настройки, документация и эксплуатация.</p></article></div>
+  <a class="text-link" href="/method/">Методика и критерии ↗</a>
+</section>
+
+<section class="section tinted">
+  <div class="section-heading"><p class="eyebrow">СТОИМОСТЬ</p><h2>Цена зависит от глубины,<br>а не от количества «агентов».</h2></div>
+  <div class="price-grid"><article class="price-card"><p class="eyebrow">ЭКСПРЕСС-ПРОВЕРКА</p><h3>Бесплатно</h3><p>До 8 публичных HTML-страниц. Технические и содержательные сигналы с доказательствами. Не аудит всей компании.</p><a class="button ghost" href="/scan/">Проверить сайт <span>↗</span></a></article><article class="price-card dark"><p class="eyebrow">АУДИТ</p><h3>от 250 000 ₽</h3><p>Когда причина проблемы неочевидна: исследование, варианты решения, ограничения и план следующего шага.</p><a class="button lime" href="/contact/">Обсудить аудит <span>↗</span></a></article><article class="price-card"><p class="eyebrow">ВНЕДРЕНИЕ</p><h3>от 500 000 ₽</h3><p>Понятный сценарий, тесты, документация и передача результата. Без обязательной покупки аудита перед каждым проектом.</p><a class="button ghost" href="/contact/">Обсудить внедрение <span>↗</span></a></article></div>
+  <p class="small muted">Автоматический расширенный отчёт: рабочая цена 25 000 ₽. Оплата пока не подключена. <a href="/prices/">Все цены и ограничения ↗</a></p>
+</section>
+
+<section class="section fit-section"><div><p class="eyebrow">КОГДА МЫ НЕ НУЖНЫ</p><h2>Иногда правильный<br>ответ — не делать<br>ИИ-проект.</h2></div><div class="fit-list"><p>Нужна гарантия первого места или попадания в рекомендации ChatGPT.</p><p>Нужно бесплатное ручное исследование вместо короткой квалификации.</p><p>Задача сводится к массовому спаму или искусственным упоминаниям.</p><p>Никто не владеет процессом и невозможно определить, что считать успехом.</p><a class="text-link" href="/solutions/">Посмотреть подходящие сценарии ↗</a></div></section>
+
+<section class="section compact-top"><div class="section-heading"><div><p class="eyebrow">ЖУРНАЛ</p><a class="text-link" href="/journal/">Все материалы ↗</a></div><div><h2>Проверьте подрядчика<br>до оплаты.</h2><p class="lede">Разбираем стоимость, риски, приёмку и технические детали без мифов про «секретные настройки для ChatGPT».</p></div></div><div class="journal-grid">{% for a in articles[:3] %}{% include 'article_card.html' %}{% endfor %}</div></section>
+
+<section class="final-cta"><h2>Сначала понять,<br>что именно стоит менять.</h2><div><p>Начните с сайта или пришлите конкретную задачу. Оба маршрута ведут к одному: проверяемому решению.</p><a class="button dark" href="/scan/">Начать с сайта <span>↗</span></a></div></section>
 {% endblock %}
