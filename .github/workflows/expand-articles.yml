@@ -43,7 +43,7 @@ jobs:
           python - <<'PY'
           from pathlib import Path
           from zipfile import ZipFile
-          import base64, json, re, shutil, tempfile
+          import base64, json, re, tempfile
 
           root = Path('.')
           bundle = root / 'content' / 'articles.bundle.b64'
@@ -80,8 +80,6 @@ jobs:
                   metadata = json.loads(metadata_raw)
                   if metadata.get('id') != aid:
                       raise RuntimeError(f'ID mismatch: {source.name}')
-                  # Existing site loader historically called this cluster "proof".
-                  # Preserve the public meaning while keeping current routes compatible.
                   if metadata.get('cluster') == 'evidence':
                       metadata['cluster'] = 'proof'
                   target = out / f'{aid}.md'
@@ -126,3 +124,5 @@ jobs:
           git add content/articles content/articles.bundle.b64
           git commit -m 'content: expand full 100-article journal'
           git push origin HEAD:main
+
+# Triggered after the workflow existed so GitHub can execute the path-filtered build.
