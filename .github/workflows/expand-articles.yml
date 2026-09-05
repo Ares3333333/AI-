@@ -1,0 +1,128 @@
+name: Expand full journal
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/articles.bundle.b64'
+      - '.github/workflows/expand-articles.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: expand-full-journal
+  cancel-in-progress: true
+
+jobs:
+  expand:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Stop cleanly when bundle is already consumed
+        id: bundle
+        shell: bash
+        run: |
+          if [ -f content/articles.bundle.b64 ]; then
+            echo 'present=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'present=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Decode 100 article documents
+        if: steps.bundle.outputs.present == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+          import base64, json, re, shutil, tempfile
+
+          root = Path('.')
+          bundle = root / 'content' / 'articles.bundle.b64'
+          raw = base64.b64decode(bundle.read_text(encoding='utf-8'))
+          zpath = Path('/tmp/articles.zip')
+          zpath.write_bytes(raw)
+
+          out = root / 'content' / 'articles'
+          out.mkdir(parents=True, exist_ok=True)
+          for old in out.glob('A[0-9][0-9][0-9].md'):
+              old.unlink()
+          for old in out.glob('A[0-9][0-9][0-9]-*.md'):
+              old.unlink()
+
+          with tempfile.TemporaryDirectory() as td:
+              td = Path(td)
+              with ZipFile(zpath) as z:
+                  if z.testzip() is not None:
+                      raise RuntimeError('Article ZIP integrity check failed')
+                  z.extractall(td)
+              sources = sorted((td / 'content' / 'articles').glob('A[0-9][0-9][0-9]-*.md'))
+              if len(sources) != 100:
+                  raise RuntimeError(f'Expected 100 article files, got {len(sources)}')
+              ids = []
+              for source in sources:
+                  match = re.match(r'(A\d{3})-', source.name)
+                  if not match:
+                      raise RuntimeError(f'Bad article filename: {source.name}')
+                  aid = match.group(1)
+                  text = source.read_text(encoding='utf-8')
+                  if not text.startswith('---\n'):
+                      raise RuntimeError(f'Missing frontmatter: {source.name}')
+                  metadata_raw, body = text[4:].split('\n---\n', 1)
+                  metadata = json.loads(metadata_raw)
+                  if metadata.get('id') != aid:
+                      raise RuntimeError(f'ID mismatch: {source.name}')
+                  # Existing site loader historically called this cluster "proof".
+                  # Preserve the public meaning while keeping current routes compatible.
+                  if metadata.get('cluster') == 'evidence':
+                      metadata['cluster'] = 'proof'
+                  target = out / f'{aid}.md'
+                  target.write_text('---\n' + json.dumps(metadata, ensure_ascii=False, indent=2) + '\n---\n' + body.strip() + '\n', encoding='utf-8')
+                  ids.append(aid)
+
+          expected = {f'A{i:03d}' for i in range(1, 101)}
+          if set(ids) != expected:
+              raise RuntimeError('Article ID set is incomplete')
+          bundle.unlink()
+          print('Expanded 100 independent Markdown article documents.')
+          PY
+
+      - name: Install pinned project dependencies
+        if: steps.bundle.outputs.present == 'true'
+        run: pip install -r requirements-dev.txt
+
+      - name: Verify journal contract and existing tests
+        if: steps.bundle.outputs.present == 'true'
+        shell: bash
+        run: |
+          python - <<'PY'
+          from siteapp.content import load_articles, article_counts
+          expected = {f'A{i:03d}' for i in range(1, 101)}
+          items = load_articles()
+          assert len(items) == 100, len(items)
+          assert {a['id'] for a in items} == expected
+          assert min(a['word_count'] for a in items) >= 150
+          counts = article_counts(items)
+          assert counts['written'] == 100
+          assert counts['published'] == 0
+          print({'articles': len(items), 'min_words': min(a['word_count'] for a in items), 'counts': counts})
+          PY
+          python -m pytest -q
+
+      - name: Commit expanded journal
+        if: steps.bundle.outputs.present == 'true'
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add content/articles content/articles.bundle.b64
+          git commit -m 'content: expand full 100-article journal'
+          git push origin HEAD:main
